@@ -52,15 +52,17 @@ CLIENT_ORIGIN=http://localhost:5173
 
 Optional for admin seeding:
 ```
-ADMIN_NAME=KK Global Admin
-ADMIN_EMAIL=admin@kkglobalgroup.com
-ADMIN_PASSWORD=Admin@12345
+ADMIN_NAME=Kamran Khan
+ADMIN_EMAIL=Ambreenramzan1998@gmail.com
+ADMIN_PASSWORD=change_this_password
 ```
 
 ## Admin Seed
 ```bash
 npm run seed:admin
 ```
+This seed command will remove any other admin accounts and keep the admin user defined by
+`ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD`.
 
 ## Render Deployment
 1. Push this backend folder to a GitHub repository.

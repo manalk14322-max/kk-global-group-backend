@@ -9,25 +9,42 @@ const seedAdmin = async () => {
   try {
     await connectDB();
 
-    const adminEmail = process.env.ADMIN_EMAIL || "admin@kkglobalgroup.com";
-    const adminPassword = process.env.ADMIN_PASSWORD || "Admin@12345";
-    const adminName = process.env.ADMIN_NAME || "KK Global Admin";
+    const adminEmail = String(process.env.ADMIN_EMAIL || "").trim().toLowerCase();
+    const adminPassword = String(process.env.ADMIN_PASSWORD || "").trim();
+    const adminName = String(process.env.ADMIN_NAME || "").trim();
 
-    const existing = await User.findOne({ email: adminEmail.toLowerCase() });
-    if (existing) {
-      console.log(`Admin already exists: ${adminEmail}`);
-      process.exit(0);
+    if (!adminName || !adminEmail || !adminPassword) {
+      throw new Error("ADMIN_NAME, ADMIN_EMAIL and ADMIN_PASSWORD must be set before seeding admin.");
     }
 
-    const hashedPassword = await bcrypt.hash(adminPassword, 10);
-    await User.create({
-      name: adminName,
-      email: adminEmail.toLowerCase(),
-      password: hashedPassword,
+    const removedAdmins = await User.deleteMany({
       role: "admin",
+      email: { $ne: adminEmail },
     });
 
-    console.log(`Admin created successfully: ${adminEmail}`);
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+
+    const existing = await User.findOne({ email: adminEmail });
+    if (existing) {
+      existing.name = adminName;
+      existing.password = hashedPassword;
+      existing.role = "admin";
+      await existing.save();
+      console.log(`Admin updated successfully: ${adminEmail}`);
+    } else {
+      await User.create({
+        name: adminName,
+        email: adminEmail,
+        password: hashedPassword,
+        role: "admin",
+      });
+      console.log(`Admin created successfully: ${adminEmail}`);
+    }
+
+    if (removedAdmins.deletedCount > 0) {
+      console.log(`Removed ${removedAdmins.deletedCount} old admin account(s).`);
+    }
+
     process.exit(0);
   } catch (error) {
     console.error("Failed to seed admin:", error.message);
