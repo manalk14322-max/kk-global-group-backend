@@ -73,10 +73,24 @@ const validateInvestorApply = (req, res, next) => {
   next();
 };
 
+const validateNewsletter = (req, res, next) => {
+  const { email } = req.body;
+  if (!email) {
+    res.status(400);
+    throw new Error("email is required");
+  }
+  if (!isEmail(email)) {
+    res.status(400);
+    throw new Error("Invalid email format");
+  }
+  next();
+};
+
 module.exports = {
   requireFields,
   validateRegister,
   validateLogin,
   validateContact,
   validateInvestorApply,
+  validateNewsletter,
 };

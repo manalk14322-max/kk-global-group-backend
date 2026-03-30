@@ -2,6 +2,7 @@ const express = require("express");
 const {
   getAllContacts,
   getAllInvestors,
+  getAllNewsletters,
   approveInvestor,
   rejectInvestor,
   getDashboardStats,
@@ -15,6 +16,7 @@ router.use(protect, authorizeRoles("admin"));
 
 router.get("/contacts", getAllContacts);
 router.get("/investors", getAllInvestors);
+router.get("/newsletters", getAllNewsletters);
 router.put("/investor/:id/approve", approveInvestor);
 router.put("/investor/:id/reject", rejectInvestor);
 router.get("/dashboard", getDashboardStats);

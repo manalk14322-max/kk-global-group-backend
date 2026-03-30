@@ -4,6 +4,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const investorRoutes = require("./routes/investorRoutes");
+const newsletterRoutes = require("./routes/newsletterRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const { notFoundHandler, errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
@@ -79,6 +80,7 @@ const requireDatabaseConnection = async (req, res, next) => {
 app.use("/api/auth", requireDatabaseConnection, authRoutes);
 app.use("/api/contact", requireDatabaseConnection, contactRoutes);
 app.use("/api/investor", requireDatabaseConnection, investorRoutes);
+app.use("/api/newsletter", requireDatabaseConnection, newsletterRoutes);
 app.use("/api/admin", requireDatabaseConnection, adminRoutes);
 
 app.use(notFoundHandler);
