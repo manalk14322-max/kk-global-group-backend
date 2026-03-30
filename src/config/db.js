@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const DEFAULTS = require("./defaults");
 
 const globalCache = globalThis.__kkGlobalMongoCache || {
   conn: null,
@@ -21,7 +22,7 @@ const connectDB = async () => {
     return globalCache.conn;
   }
 
-  const mongoUri = process.env.MONGODB_URI;
+  const mongoUri = process.env.MONGODB_URI || DEFAULTS.MONGODB_URI;
 
   if (!mongoUri) {
     throw new Error("MONGODB_URI is missing in environment variables.");

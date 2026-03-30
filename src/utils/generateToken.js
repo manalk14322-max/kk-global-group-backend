@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
+const DEFAULTS = require("../config/defaults");
 
 const generateToken = (user) => {
-  const secret = process.env.JWT_SECRET;
+  const secret = process.env.JWT_SECRET || DEFAULTS.JWT_SECRET;
   if (!secret) {
     throw new Error("JWT_SECRET is missing in environment variables.");
   }
@@ -14,7 +15,7 @@ const generateToken = (user) => {
     },
     secret,
     {
-      expiresIn: process.env.JWT_EXPIRES_IN || "7d",
+      expiresIn: process.env.JWT_EXPIRES_IN || DEFAULTS.JWT_EXPIRES_IN,
     }
   );
 };

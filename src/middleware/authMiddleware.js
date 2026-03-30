@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const asyncHandler = require("../utils/asyncHandler");
+const DEFAULTS = require("../config/defaults");
 
 const protect = asyncHandler(async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -10,7 +11,7 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
-  const secret = process.env.JWT_SECRET;
+  const secret = process.env.JWT_SECRET || DEFAULTS.JWT_SECRET;
 
   if (!secret) {
     res.status(500);
